@@ -22,7 +22,7 @@ const bot = new Client({
   ],
 });
 
-bot.on('ready', () => {
+bot.on('clientReady', () => {
   console.log(`Logged in as ${bot.user.tag}`);
 });
 
@@ -30,7 +30,7 @@ bot.on('messageCreate', async (message) => {
   if (message.author.bot) return;
 
   // Detect messages that start with "m!"
-  if (message.content.startsWith("m!") && message.channel != "music-request") {
+  if (message.content.startsWith("m!") && message.channelId != "1411848535476801708") {
     try {
       // Timeout for 1 minute
       await message.member.timeout(60_000, "Used forbidden prefix m!");
