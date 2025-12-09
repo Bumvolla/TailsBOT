@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import { Client, GatewayIntentBits } from 'discord.js';
 import {
   ButtonStyleTypes,
   InteractionResponseFlags,
@@ -10,6 +11,40 @@ import {
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+
+//Create a bot client
+const bot = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers
+  ],
+});
+
+bot.on('ready', () => {
+  console.log(`Logged in as ${bot.user.tag}`);
+});
+
+bot.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+
+  // Detect messages that start with "m!"
+  if (message.content.startsWith("m!") && message.channel != "music-request") {
+    try {
+      // Timeout for 1 minute
+      await message.member.timeout(60_000, "Used forbidden prefix m!");
+
+      await message.channel.send(
+        `${message.author}, you shuldn't be using that command here! Go think for a minute >:c`
+      );
+    } catch (err) {
+      console.error("Could not timeout user:", err);
+    }
+  }
+});
+
+bot.login(process.env.DISCORD_TOKEN);
 
 // Create an express app
 const app = express();
