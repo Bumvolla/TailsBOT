@@ -55,21 +55,26 @@ const PORT = process.env.PORT || 3000;
 // To keep track of our active games
 const activeGames = {};
 
-app.post('/ha/mine', express.json(), async function (req, res) {
-  // Interaction id, type and data
+app.post('/ha/mine', express.json(), async (req, res) => {
   const { event } = req.body;
   console.log("Received Minecraft HA request:", req.body);
-  
-  if (event === 'minecraft_down') {
-    // Send notification to a specific Discord channel
-    const channel = await bot.channels.fetch('1422955603868909638');
-    await channel.send('⚠️ Minecraft server went down!');
-  }
-  if (event === 'minecraft_up') {
-    const channel = await bot.channels.fetch('1422955603868909638');
-    await channel.send('✅ Minecraft server is back up!');
-  }
 
+  try {
+    const channel = await bot.channels.fetch('1422955603868909638');
+
+    if (event === 'minecraft_down') {
+      await channel.send('⚠️ Minecraft server went down!');
+    } else if (event === 'minecraft_up') {
+      await channel.send('✅ Minecraft server is back up!');
+    } else {
+      return res.status(400).send({ error: 'Unknown event' });
+    }
+
+    res.status(200).send({ status: 'ok' }); // <--- important
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Failed to send message' });
+  }
 });
 
 /**
