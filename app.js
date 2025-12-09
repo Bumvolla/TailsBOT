@@ -32,11 +32,13 @@ bot.on('messageCreate', async (message) => {
   // Detect messages that start with "m!"
   if (message.content.startsWith("m!") && message.channelId != "1411848535476801708") {
     try {
+      await message.delete();
+
       // Timeout for 1 minute
-      await message.member.timeout(60_000, "Used forbidden prefix m!");
+      await message.member.timeout(10_000, "Used forbidden prefix m!");
 
       await message.channel.send(
-        `${message.author}, you shuldn't be using that command here! Go think for a minute >:c`
+        `${message.author}, you shouldn't be using that command here! Go think for a minute >:c`
       );
     } catch (err) {
       console.error("Could not timeout user:", err);
@@ -52,6 +54,23 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // To keep track of our active games
 const activeGames = {};
+
+app.post('/ha/mine', express.json(), async function (req, res) {
+  // Interaction id, type and data
+  const { event } = req.body;
+  console.log("Received Minecraft HA request:", req.body);
+  
+  if (event === 'minecraft_down') {
+    // Send notification to a specific Discord channel
+    const channel = await bot.channels.fetch('1422955603868909638');
+    await channel.send('⚠️ Minecraft server went down!');
+  }
+  if (event === 'minecraft_up') {
+    const channel = await bot.channels.fetch('1422955603868909638');
+    await channel.send('✅ Minecraft server is back up!');
+  }
+
+});
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
