@@ -35,10 +35,10 @@ bot.on('messageCreate', async (message) => {
       await message.delete();
 
       // Timeout for 1 minute
-      await message.member.timeout(10_000, "Used forbidden prefix m!");
+      await message.member.timeout(10_000, "Tails caught you using that command in the wrong channel");
 
       await message.channel.send(
-        `${message.author}, you shouldn't be using that command here! Go think for a minute >:c`
+        `${message.author}, you shouldn't be using that command here! Go think for 10 seconds >:c`
       );
     } catch (err) {
       console.error("Could not timeout user:", err);
@@ -57,20 +57,22 @@ const activeGames = {};
 
 app.post('/ha/mine', express.json(), async (req, res) => {
   const { event } = req.body;
-  console.log("Received Minecraft HA request:", req.body);
+  console.log("Received minecraft HA request:", req.body);
 
   try {
-    const channel = await bot.channels.fetch('1422955603868909638');
+    const mineinfo_channel = await bot.channels.fetch('1422955603868909638');
 
     if (event === 'minecraft_down') {
-      await channel.send('⚠️ Minecraft server went down!');
-    } else if (event === 'minecraft_up') {
-      await channel.send('✅ Minecraft server is back up!');
-    } else {
+      await mineinfo_channel.send("⚠️ Minecraft server went down. We're working on it!");
+    } 
+    else if (event === 'minecraft_up') {
+      await mineinfo_channel.send('✅ Minecraft server is back up. Go get your diamonds!');
+    } 
+    else {
       return res.status(400).send({ error: 'Unknown event' });
     }
 
-    res.status(200).send({ status: 'ok' }); // <--- important
+    res.status(200).send({ status: 'ok' }); 
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Failed to send message' });
@@ -158,7 +160,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         },
       });
     }
-
 
     console.error(`unknown command: ${name}`);
     return res.status(400).json({ error: 'unknown command' });
