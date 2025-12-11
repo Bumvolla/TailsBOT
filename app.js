@@ -33,11 +33,11 @@ bot.on('messageCreate', async (message) => {
   
 });
 
-bot.on('guildScheduledEventUserAdd', async (event, user) => {
+bot.on('guildScheduledEventUserAdd', async (guildScheduledEvent, user) => {
 
-  log(`User ${user.tag} added to event "${event.name}"`);
-  
-  await assignRoleOnJoinEvent(event, user);
+  log(`User ${user.tag} added to event "${guildScheduledEvent.name}"`);
+
+  await assignRoleOnJoinEvent(guildScheduledEvent, user);
 
 });
 
@@ -58,7 +58,7 @@ app.post('/ha/mine', express.json(), async (req, res) => {
     const mineinfo_channel = await bot.channels.fetch('1422955603868909638');
 
     if (event === 'minecraft_down') {
-      await mineinfo_channel.send("⚠️ Minecraft server went down. We're working on it!");
+      await mineinfo_channel.send("⚠️ Minecraft server went down. We're working on it! 🛠️");
     } 
     else if (event === 'minecraft_up') {
       await mineinfo_channel.send('✅ Minecraft server is back up. Go get your diamonds!');
