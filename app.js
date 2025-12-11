@@ -29,21 +29,14 @@ bot.on('clientReady', () => {
 bot.on('messageCreate', async (message) => {
   if (message.author.bot) return;
 
-  // Detect messages that start with "m!"
-  if (message.content.startsWith("m!") && message.channelId != "1411848535476801708") {
-    try {
-      await message.delete();
+  await check_user_talking_to_bot_in_wrong_channel(message);
+  
+});
 
-      // Timeout for 1 minute
-      await message.member.timeout(10_000, "Tails caught you using that command in the wrong channel");
+client.on('guildScheduledEventUserAdd', async (event, user) => {
 
-      await message.channel.send(
-        `${message.author}, you shouldn't be using that command here! Go think for 10 seconds >:c`
-      );
-    } catch (err) {
-      console.error("Could not timeout user:", err);
-    }
-  }
+  await assignRoleOnJoinEvent(event, user);
+  
 });
 
 bot.login(process.env.DISCORD_TOKEN);

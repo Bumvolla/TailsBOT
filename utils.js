@@ -45,3 +45,51 @@ export function getRandomEmoji() {
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export async function assignRoleOnJoinEvent(event, user) {
+
+   // EVENT ID : ROLE ID
+  const event_ID_dictionary = {
+    "1448683071439245362": "1448686806341128192" // Game Awards 2025
+  };
+
+  // Check if event exists in dictionary
+  if (!(event.id in event_ID_dictionary)) return;
+
+  const roleId = event_ID_dictionary[event.id];
+  const guild = event.guild;
+
+  try {
+    const member = await guild.members.fetch(user.id);
+    const role = guild.roles.cache.get(roleId);
+
+    if (!role) {
+      console.error("Role not found");
+      return;
+    }
+
+    await member.roles.add(role);
+    console.log(`Gave role ${role.name} to ${user.tag} for joining event "${event.name}"`);
+
+  } catch (err) {
+    console.error("Error adding role:", err);
+  }
+}
+
+export async function check_user_talking_to_bot_in_wrong_channel(message) {
+// Detect messages that start with "m!"
+  if (message.content.startsWith("m!") && message.channelId != "1411848535476801708") {
+    try {
+      await message.delete();
+
+      // Timeout for 1 minute
+      await message.member.timeout(10_000, "Tails caught you using that command in the wrong channel");
+
+      await message.channel.send(
+        `${message.author}, you shouldn't be using that command here! Go think for 10 seconds >:c`
+      );
+    } catch (err) {
+      console.error("Could not timeout user:", err);
+    }
+  }
+}
