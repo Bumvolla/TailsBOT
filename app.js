@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits, GuildScheduledEvent } from 'discord.js';
 import {
   ButtonStyleTypes,
   InteractionResponseFlags,
@@ -35,10 +35,16 @@ bot.on('messageCreate', async (message) => {
 
 bot.on('guildScheduledEventUserAdd', async (guildScheduledEvent, user) => {
 
-  log(`User ${user.tag} added to event "${guildScheduledEvent.name}"`);
+  console.log(`User ${user.tag} added to event "${guildScheduledEvent.name}"`);
 
   await assignRoleOnJoinEvent(guildScheduledEvent, user);
 
+});
+
+
+bot.on('guildScheduledEventUserRemove', async (guildScheduledEvent, user ) => {
+
+  console.log(`User ${user.tag} removed from event "${guildScheduledEvent.name}"`);
 });
 
 bot.login(process.env.DISCORD_TOKEN);
