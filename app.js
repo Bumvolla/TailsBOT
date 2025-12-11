@@ -35,6 +35,8 @@ bot.on('messageCreate', async (message) => {
 
 bot.on('guildScheduledEventUserAdd', async (event, user) => {
 
+  log(`User ${user.tag} added to event "${event.name}"`);
+  
   await assignRoleOnJoinEvent(event, user);
 
 });
