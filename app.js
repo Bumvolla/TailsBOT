@@ -33,10 +33,10 @@ bot.on('messageCreate', async (message) => {
   
 });
 
-client.on('guildScheduledEventUserAdd', async (event, user) => {
+bot.on('guildScheduledEventUserAdd', async (event, user) => {
 
   await assignRoleOnJoinEvent(event, user);
-  
+
 });
 
 bot.login(process.env.DISCORD_TOKEN);
