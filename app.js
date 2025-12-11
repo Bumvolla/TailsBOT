@@ -9,7 +9,7 @@ import {
   MessageComponentTypes,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import { getRandomEmoji, DiscordRequest } from './utils.js';
+import { getRandomEmoji, DiscordRequest, check_user_talking_to_bot_in_wrong_channel, assignRoleOnJoinEvent } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 
 //Create a bot client
