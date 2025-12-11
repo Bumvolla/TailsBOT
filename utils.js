@@ -53,8 +53,15 @@ export async function assignRoleOnJoinEvent(event, user) {
     "1448683071439245362": "1448686806341128192" // Game Awards 2025
   };
 
+  console.log(`User ${user.tag} joined event "${event.name}"`);
+
   // Check if event exists in dictionary
-  if (!(event.id in event_ID_dictionary)) return;
+  if (!(event.id in event_ID_dictionary))
+    
+    {
+      console.error("No role assigned for this event");
+      return;
+    }
 
   const roleId = event_ID_dictionary[event.id];
   const guild = event.guild;
