@@ -53,11 +53,9 @@ export async function assignRoleOnJoinEvent(event, user) {
     "1448683071439245362": "1448686806341128192" // Game Awards 2025
   };
 
-  console.log(`User ${user.tag} joined event "${event.name}"`);
-
   // Check if event exists in dictionary
   if (!(event.id in event_ID_dictionary))
-    
+
     {
       console.error("No role assigned for this event");
       return;
@@ -66,20 +64,22 @@ export async function assignRoleOnJoinEvent(event, user) {
   const roleId = event_ID_dictionary[event.id];
   const guild = event.guild;
 
-  try {
-    const member = await guild.members.fetch(user.id);
-    const role = guild.roles.cache.get(roleId);
+  if (!(user.roleIds.includes(roleId))) {
+    try {
+      const member = await guild.members.fetch(user.id);
+      const role = guild.roles.cache.get(roleId);
 
-    if (!role) {
-      console.error("Role not found");
-      return;
+      if (!role) {
+        console.error("Role not found");
+        return;
+      }
+
+      await member.roles.add(role);
+      console.log(`Gave role ${role.name} to ${user.tag} for joining event "${event.name}"`);
+
+    } catch (err) {
+      console.error("Error adding role:", err);
     }
-
-    await member.roles.add(role);
-    console.log(`Gave role ${role.name} to ${user.tag} for joining event "${event.name}"`);
-
-  } catch (err) {
-    console.error("Error adding role:", err);
   }
 }
 
