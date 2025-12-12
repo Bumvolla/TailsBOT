@@ -232,7 +232,7 @@ if (type === InteractionType.MESSAGE_COMPONENT) {
       const winnerId = result.win.id;
 
       // Remove game from storage
-      await move_to_finished_game(gameId, winnerId);
+      await move_to_finished_game(gameId, userId, objectName, winnerId);
 
       // Update message with token in request body
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
