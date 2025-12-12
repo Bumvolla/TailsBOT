@@ -10,7 +10,7 @@ import {
   verifyKeyMiddleware,
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest, check_user_talking_to_bot_in_wrong_channel, assignRoleOnJoinEvent } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
+import { formatResult, getShuffledOptions, getResult } from './game.js';
 import { add_active_game, get_active_game, move_to_finished_game } from './db.js';
 
 //Create a bot client

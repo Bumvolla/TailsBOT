@@ -27,7 +27,7 @@ export function getResult(p1, p2) {
   return gameResult;
 }
 
-function formatResult(result) {
+export function formatResult(result) {
   const { win, lose, verb } = result;
   return verb === 'tie'
     ? `<@${win.id}> and <@${lose.id}> draw with **${win.objectName}**`
