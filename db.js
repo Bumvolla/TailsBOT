@@ -24,8 +24,8 @@ export async function move_to_finished_game(gameId, opponentId, oponent_object_n
     const [rows] = await pool.execute('SELECT * FROM active_games WHERE id = ?', [gameId]);
     const game = rows[0];
 
-    await pool.execute('INSERT INTO finished_games (id, user_id, object_name, opponent_id, winner_id, created_at, opponent_object_name) VALUES (?, ?, ?, ?, ?, ?, ?)',
-  [game.id, game.user_id, game.object_name, opponentId, winnerId, game.created_at, oponent_object_name]
+    await pool.execute('INSERT INTO finished_games (id, user_id, object_name, opponent_id, opponent_object_name, winner_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+  [game.id, game.user_id, game.object_name, opponentId, oponent_object_name, winnerId, game.created_at]
 );
     await pool.execute('DELETE FROM active_games WHERE id = ?', [gameId]);
 }
