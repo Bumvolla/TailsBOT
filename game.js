@@ -24,7 +24,7 @@ export function getResult(p1, p2) {
     gameResult = { win: p1, lose: p2, verb: 'tie' };
   }
 
-  return formatResult(gameResult);
+  return gameResult;
 }
 
 function formatResult(result) {

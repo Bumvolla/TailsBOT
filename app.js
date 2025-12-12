@@ -11,6 +11,7 @@ import {
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest, check_user_talking_to_bot_in_wrong_channel, assignRoleOnJoinEvent } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+import { add_active_game, get_active_game, move_to_finished_game } from './db.js';
 
 //Create a bot client
 const bot = new Client({
@@ -58,7 +59,10 @@ const PORT = process.env.PORT || 3000;
 const activeGames = {};
 
 app.post('/ha/mine', express.json(), async (req, res) => {
-  const { event } = req.body;
+  const { event, token } = req.body;
+
+  if (token !== process.env.DISCORD_TOKEN) return res.status(403).send({ error: 'Invalid token' });
+
   console.log("Received minecraft HA request:", req.body);
 
   try {
@@ -131,10 +135,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       const objectName = req.body.data.options[0].value;
 
       // Create active game using message ID as the game ID
-      activeGames[id] = {
-        id: userId,
-        objectName,
-      };
+      await add_active_game(req.body.id, userId, objectName);
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -210,21 +211,29 @@ if (type === InteractionType.MESSAGE_COMPONENT) {
     // get the associated game ID
     const gameId = componentId.replace('select_choice_', '');
 
-    if (activeGames[gameId]) {
+    // Fetch active game from database
+    const game = await get_active_game(gameId);
+
+    if (game) {
       // Interaction context
       const context = req.body.context;
       // Get user ID and object choice for responding user
       // User ID is in user field for (G)DMs, and member for servers
       const userId = context === 0 ? req.body.member.user.id : req.body.user.id;
       const objectName = data.values[0];
+
       // Calculate result from helper function
-      const resultStr = getResult(activeGames[gameId], {
-        id: userId,
-        objectName,
-      });
+      const result = getResult(
+        { id: game.user_id, objectName: game.object_name },
+        { id: userId, objectName: objectName }
+      );
+
+      const resultStr = formatResult(result);
+      const winnerId = result.win.id;
 
       // Remove game from storage
-      delete activeGames[gameId];
+      await move_to_finished_game(gameId, winnerId);
+
       // Update message with token in request body
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
