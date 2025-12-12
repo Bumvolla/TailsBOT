@@ -20,7 +20,7 @@ export async function get_active_game(id) {
     return rows[0];
 }
 
-export async function move_to_finished_game() {
+export async function move_to_finished_game(gameId, winnerId) {
     const [rows] = await pool.execute('SELECT * FROM active_games WHERE id = ?', [gameId]);
     const game = rows[0];
 
