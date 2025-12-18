@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="512" height="512" alt="FabBanner" src="https://github.com/user-attachments/assets/975bc9c0-039e-4bff-a534-48f36e540c68" />
+  <img width="256" height="256" alt="FabBanner" src="https://github.com/user-attachments/assets/975bc9c0-039e-4bff-a534-48f36e540c68" />
   <br/>
   <a href="https://discord.js.org/">
     <img src="https://img.shields.io/badge/discord.js-node-green?logo=discord" alt="Discord.js">
