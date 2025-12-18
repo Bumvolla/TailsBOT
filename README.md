@@ -1,35 +1,26 @@
+<p align="center">
+  <img width="512" height="512" alt="FabBanner" src="https://github.com/user-attachments/assets/975bc9c0-039e-4bff-a534-48f36e540c68" />
+  <br/>
+  <a href="https://discord.js.org/">
+    <img src="https://img.shields.io/badge/discord.js-node-green?logo=discord" alt="Discord.js">
+  </a>
+  <br/>
+  <b>Custom Discord Bot integration that meets ridiculy specific needs</b>
+</p>
+
+# 
+
 # Getting Started app for Discord
 
-This project contains a basic rock-paper-scissors-style Discord app written in JavaScript, built for the [getting started guide](https://discord.com/developers/docs/getting-started).
+This project is based on Discord's official [getting started guide](https://discord.com/developers/docs/getting-started).
 
-![Demo of app](https://github.com/discord/discord-example-app/raw/main/assets/getting-started-demo.gif?raw=true)
-
-## Project structure
-Below is a basic overview of the project structure:
-
-```
-├── examples    -> short, feature-specific sample apps
-│   ├── app.js  -> finished app.js code
-│   ├── button.js
-│   ├── command.js
-│   ├── modal.js
-│   ├── selectMenu.js
-├── .env.sample -> sample .env file
-├── app.js      -> main entrypoint for app
-├── commands.js -> slash command payloads + helpers
-├── game.js     -> logic specific to RPS
-├── utils.js    -> utility functions and enums
-├── package.json
-├── README.md
-└── .gitignore
-```
+It's a Tails "Milles" Prowles flavoured discord bot that helps me manage my private server. It uses both the Discord client and express points to be able to meet that needs.
 
 ## Running app locally
 
 Before you start, you'll need to install [NodeJS](https://nodejs.org/en/download/) and [create a Discord app](https://discord.com/developers/applications) with the proper permissions:
 - `applications.commands`
 - `bot` (with Send Messages enabled)
-
 
 Configuring the app is covered in detail in the [getting started guide](https://discord.com/developers/docs/getting-started).
 
@@ -69,35 +60,15 @@ After your credentials are added, go ahead and run the app:
 node app.js
 ```
 
-> ⚙️ A package [like `nodemon`](https://github.com/remy/nodemon), which watches for local changes and restarts your app, may be helpful while locally developing.
-
 If you aren't following the [getting started guide](https://discord.com/developers/docs/getting-started), you can move the contents of `examples/app.js` (the finished `app.js` file) to the top-level `app.js`.
 
 ### Set up interactivity
 
-The project needs a public endpoint where Discord can send requests. To develop and test locally, you can use something like [`ngrok`](https://ngrok.com/) to tunnel HTTP traffic.
-
-Install ngrok if you haven't already, then start listening on port `3000`:
-
-```
-ngrok http 3000
-```
-
-You should see your connection open:
-
-```
-Tunnel Status                 online
-Version                       2.0/2.0
-Web Interface                 http://127.0.0.1:4040
-Forwarding                    https://1234-someurl.ngrok.io -> localhost:3000
-
-Connections                  ttl     opn     rt1     rt5     p50     p90
-                              0       0       0.00    0.00    0.00    0.00
-```
+The project needs a public endpoint where Discord can send requests.
 
 Copy the forwarding address that starts with `https`, in this case `https://1234-someurl.ngrok.io`, then go to your [app's settings](https://discord.com/developers/applications).
 
-On the **General Information** tab, there will be an **Interactions Endpoint URL**. Paste your ngrok address there, and append `/interactions` to it (`https://1234-someurl.ngrok.io/interactions` in the example).
+On the **General Information** tab, there will be an **Interactions Endpoint URL**. Paste your public endpoint there, and append `/interactions` to it.
 
 Click **Save Changes**, and your app should be ready to run 🚀
 
